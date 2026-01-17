@@ -1,10 +1,17 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { Minus, Plus } from 'lucide-react';
+import { Minus, Plus, Check } from 'lucide-react';
 import heroMug from '@/assets/hero-mug.jpg';
+
+const colors = [
+  { id: 'black', name: 'Deep Space Black', hex: '#000000' },
+  { id: 'white', name: 'Lunar White', hex: '#FAFAFA' },
+  { id: 'titanium', name: 'Titanium Silver', hex: '#A1A1A1' },
+];
 
 export const ShopSection = () => {
   const [quantity, setQuantity] = useState(1);
+  const [selectedColor, setSelectedColor] = useState('black');
 
   const decreaseQty = () => setQuantity((q) => Math.max(1, q - 1));
   const increaseQty = () => setQuantity((q) => Math.min(10, q + 1));
@@ -23,10 +30,14 @@ export const ShopSection = () => {
           >
             <img
               src={heroMug}
-              alt="Orbit Mug"
+              alt="Interstellar Flight Mug"
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 border border-border group-hover:border-foreground/30 transition-colors duration-500" />
+            
+            {/* Corner Accents */}
+            <div className="absolute top-4 left-4 w-8 h-8 border-l border-t border-foreground/30" />
+            <div className="absolute bottom-4 right-4 w-8 h-8 border-r border-b border-foreground/30" />
           </motion.div>
 
           {/* Product Details */}
@@ -37,9 +48,9 @@ export const ShopSection = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <p className="text-label mb-2">Limited Edition</p>
-              <h2 className="text-section-title mb-4">Orbit Mug</h2>
-              <p className="text-3xl font-light">$49.00</p>
+              <p className="text-label text-titanium mb-3">Mission Control Edition</p>
+              <h2 className="text-section-title mb-6">Interstellar Flight Mug</h2>
+              <p className="text-4xl font-light">$79.00</p>
             </motion.div>
 
             <motion.p
@@ -49,9 +60,9 @@ export const ShopSection = () => {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-muted-foreground leading-relaxed"
             >
-              The Orbit Mug represents the pinnacle of ceramic engineering. Each
-              mug is individually inspected to ensure it meets our exacting
-              standards of quality and performance.
+              Precision-engineered for those who demand excellence. The Interstellar Flight Mug 
+              represents the pinnacle of beverage containment technology, tested in the most 
+              extreme conditions known to humanity.
             </motion.p>
 
             <motion.div
@@ -69,12 +80,34 @@ export const ShopSection = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.25 }}
             >
-              <p className="text-label mb-4">Color</p>
-              <div className="flex gap-3">
-                <button className="w-10 h-10 rounded-full bg-[#0a0a0a] border-2 border-foreground ring-2 ring-offset-2 ring-offset-background ring-foreground" />
-                <button className="w-10 h-10 rounded-full bg-[#fafafa] border border-border hover:border-foreground transition-colors" />
-                <button className="w-10 h-10 rounded-full bg-[#404040] border border-border hover:border-foreground transition-colors" />
+              <p className="text-label text-titanium mb-4">Finish</p>
+              <div className="flex gap-4">
+                {colors.map((color) => (
+                  <button
+                    key={color.id}
+                    onClick={() => setSelectedColor(color.id)}
+                    className={`relative w-12 h-12 rounded-full border-2 transition-all duration-300 ${
+                      selectedColor === color.id 
+                        ? 'border-foreground ring-2 ring-offset-2 ring-offset-background ring-foreground/50' 
+                        : 'border-border hover:border-foreground/50'
+                    }`}
+                    style={{ backgroundColor: color.hex }}
+                    title={color.name}
+                  >
+                    {selectedColor === color.id && (
+                      <Check 
+                        size={16} 
+                        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${
+                          color.id === 'white' ? 'text-background' : 'text-foreground'
+                        }`}
+                      />
+                    )}
+                  </button>
+                ))}
               </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                {colors.find(c => c.id === selectedColor)?.name}
+              </p>
             </motion.div>
 
             {/* Quantity */}
@@ -84,18 +117,18 @@ export const ShopSection = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <p className="text-label mb-4">Quantity</p>
+              <p className="text-label text-titanium mb-4">Quantity</p>
               <div className="inline-flex items-center border border-border">
                 <button
                   onClick={decreaseQty}
-                  className="p-3 hover:bg-secondary transition-colors"
+                  className="p-4 hover:bg-secondary transition-colors"
                 >
                   <Minus size={16} />
                 </button>
-                <span className="w-16 text-center font-light">{quantity}</span>
+                <span className="w-20 text-center font-light text-lg">{quantity}</span>
                 <button
                   onClick={increaseQty}
-                  className="p-3 hover:bg-secondary transition-colors"
+                  className="p-4 hover:bg-secondary transition-colors"
                 >
                   <Plus size={16} />
                 </button>
@@ -108,10 +141,14 @@ export const ShopSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.35 }}
-              className="flex flex-col sm:flex-row gap-4 pt-4"
+              className="flex flex-col gap-4 pt-4"
             >
-              <button className="btn-accent flex-1">Add to Cart</button>
-              <button className="btn-hero-filled flex-1">Buy Now</button>
+              <button className="btn-glow w-full text-center">
+                Add to Manifest
+              </button>
+              <button className="btn-hero w-full text-center">
+                Buy Now — ${(79 * quantity).toFixed(2)}
+              </button>
             </motion.div>
 
             {/* Trust Badges */}
@@ -120,11 +157,20 @@ export const ShopSection = () => {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex items-center gap-6 text-muted-foreground text-xs tracking-wide pt-4"
+              className="grid grid-cols-3 gap-4 text-center pt-6"
             >
-              <span>✓ Free Shipping</span>
-              <span>✓ 30-Day Returns</span>
-              <span>✓ 2-Year Warranty</span>
+              {[
+                { icon: '🚀', label: 'Free Shipping' },
+                { icon: '↩️', label: '30-Day Returns' },
+                { icon: '🛡️', label: 'Lifetime Warranty' },
+              ].map((badge, index) => (
+                <div key={index} className="p-4 border border-border">
+                  <span className="text-xl mb-2 block">{badge.icon}</span>
+                  <span className="text-[10px] font-mono text-titanium uppercase tracking-widest">
+                    {badge.label}
+                  </span>
+                </div>
+              ))}
             </motion.div>
           </div>
         </div>

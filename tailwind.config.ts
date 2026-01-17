@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Space Grotesk", "system-ui", "sans-serif"],
+        sans: ["Inter", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -50,15 +50,7 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        space: {
-          black: "hsl(var(--space-black))",
-          dark: "hsl(var(--space-dark))",
-          gray: "hsl(var(--space-gray))",
-          light: "hsl(var(--space-light))",
-          white: "hsl(var(--space-white))",
-          red: "hsl(var(--space-red))",
-          "red-glow": "hsl(var(--space-red-glow))",
-        },
+        titanium: "hsl(var(--titanium))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -100,6 +92,10 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-20px)" },
         },
+        shimmer: {
+          "0%": { left: "-100%" },
+          "100%": { left: "100%" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -108,6 +104,7 @@ export default {
         "fade-in": "fade-in 0.6s ease-out forwards",
         "scale-in": "scale-in 0.6s ease-out forwards",
         float: "float 6s ease-in-out infinite",
+        shimmer: "shimmer 2s infinite",
       },
     },
   },
