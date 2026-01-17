@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 
 interface Star {
@@ -8,29 +8,35 @@ interface Star {
   size: number;
   duration: number;
   delay: number;
+  moveX: number;
+  moveY: number;
 }
 
 export const StarField = () => {
-  const [stars, setStars] = useState<Star[]>([]);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const generateStars = () => {
-      const newStars: Star[] = [];
-      for (let i = 0; i < 100; i++) {
-        newStars.push({
-          id: i,
-          x: Math.random() * 100,
-          y: Math.random() * 100,
-          size: Math.random() * 2 + 0.5,
-          duration: Math.random() * 3 + 2,
-          delay: Math.random() * 2,
-        });
-      }
-      setStars(newStars);
-    };
-
-    generateStars();
+    setMounted(true);
   }, []);
+
+  const stars = useMemo<Star[]>(() => {
+    const newStars: Star[] = [];
+    for (let i = 0; i < 150; i++) {
+      newStars.push({
+        id: i,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        size: Math.random() * 1.5 + 0.5,
+        duration: Math.random() * 4 + 3,
+        delay: Math.random() * 3,
+        moveX: (Math.random() - 0.5) * 20,
+        moveY: (Math.random() - 0.5) * 20,
+      });
+    }
+    return newStars;
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -45,8 +51,9 @@ export const StarField = () => {
             height: star.size,
           }}
           animate={{
-            opacity: [0.2, 0.8, 0.2],
-            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.7, 0.1],
+            x: [0, star.moveX, 0],
+            y: [0, star.moveY, 0],
           }}
           transition={{
             duration: star.duration,
